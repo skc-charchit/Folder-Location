@@ -1,0 +1,30 @@
+ Regression metrics.txt
+
+The metrics commonly used for evaluating regression machine learning models include:
+Mean Squared Error (MSE): It measures the average of the squares of the errors or deviations. It is widely used and provides a good measure of the quality of a regression model.
+
+Root Mean Squared Error (RMSE): It is the square root of the MSE and is used to measure the standard deviation of the residuals.
+
+Mean Absolute Error (MAE): It measures the average of the absolute errors between the actual and predicted values. It is less sensitive to outliers compared to MSE.
+
+R-squared (R2): It represents the proportion of the variance for a dependent variable that's explained by an independent variable. It provides an indication of the goodness of fit of the model.
+
+Modified R² that penalizes adding unnecessary predictors.
+
+MAPE: Measures average prediction error as a percentage of actual values.
+
+These metrics are used to assess the predictive performance of regression models. The choice of metric depends on the specific characteristics of the problem and the goals of the modeling task. For example, MSE and RMSE are sensitive to large errors, while MAE is more robust to outliers. R-squared is used to understand how well the independent variables explain the variability of the dependent variable.
+
+It's important to select the most appropriate metric based on the specific requirements of the problem and the nature of the data. For instance, if the dataset contains outliers, MAE might be a better choice, while R-squared is useful for understanding the proportion of the variance in the dependent variable that's predictable from the independent variables.
+The selection of the right metric is crucial for accurately assessing the performance of regression models and making informed decisions about their suitability for the given task.
+
+
+Ridge Regression(L2):
+To combat the issue of overfitting in linear regression models, ridge regression is a regularization approach. The size of the coefficients is reduced and overfitting is prevented by adding a penalty term to the cost function of linear regression. The penalty term regulates the magnitude of the coefficients in the model and is proportional to the sum of squared coefficients. The coefficients shrink toward zero when the penalty term's value is raised, lowering the model's variance.
+
+
+Lasso Regression(L1):
+Lasso regression, commonly referred to as L1 regularization, is a method for stopping overfitting in linear regression models by including a penalty term in the cost function. In contrast to Ridge regression, it adds the total of the absolute values of the coefficients rather than the sum of the squared coefficients.
+
+
+ 

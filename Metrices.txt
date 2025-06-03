@@ -1,0 +1,26 @@
+Metrices.txt
+
+
+Classification machine learning models are evaluated using various metrics that measure the model's performance in predicting the class or category of new, unseen data. Some of the commonly used metrics for classification machine learning include:
+
+
+Accuracy: The proportion of correct predictions made by the model.
+Precision: The proportion of true positives among the predicted positives.
+Recall (Sensitivity): The proportion of true positives that are correctly identified.
+F1 Score: A harmonic mean of precision and recall, providing a balance between the two.
+ROC AUC (Receiver Operating Characteristic Area Under Curve): A measure of the model's ability to distinguish between classes.
+Confusion Matrix: A table that shows the number of true positives, true negatives, false positives, and false negatives.
+Logarithmic Loss: A metric that penalizes false classifications and works well with multi-class classification.
+Matthews Correlation Coefficient (MCC): A correlation between predicted classes and ground truth.
+Detection Rate: The number of correct positive class predictions made as a proportion of all predictions.
+Balanced Accuracy: The average recall obtained in each class, used to deal with imbalanced datasets.
+
+Accuracy measures the proportion of correct predictions made by the model, while precision measures the proportion of true positives among the predicted positives.
+
+Recall measures the proportion of true positives that are correctly identified, and F1 score provides a balance between precision and recall. 
+
+ROC AUC measures the model's ability to distinguish between classes, while the confusion matrix shows the number of true positives, true negatives, false positives, and false negatives. 
+
+Logarithmic loss penalizes false classifications and works well with multi-class classification, while MCC is a correlation between predicted classes and ground truth. Detection rate measures the number of correct positive class predictions made as a proportion of all predictions, and balanced accuracy is used to deal with imbalanced datasets.
+
+The choice of metric depends on the specific use case and the problem being solved. For example, precision and recall are important in medical diagnosis, where false negatives can be life-threatening. ROC AUC is useful when the cost of false positives and false negatives is different. Logarithmic loss is useful when the model needs to assign probabilities to each class. It's important to choose the right metric for the specific use case to ensure that the model is evaluated correctly.

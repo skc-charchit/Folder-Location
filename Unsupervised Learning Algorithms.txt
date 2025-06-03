@@ -1,0 +1,136 @@
+ Unsupervised Learning Algorithms
+
+1. K-Means Clustering
+Use case: Clustering datasets into K distinct, non-overlapping groups, often used when data is expected to form spherical clusters with similar densities.
+
+How it works:
+Randomly initialize K cluster centroids within the feature space.
+Assign each data point to the nearest centroid based on a distance metric (commonly Euclidean distance).
+Recompute each centroid as the mean of all data points assigned to that cluster.
+Repeat assignment and centroid recomputation iteratively until centroids no longer change significantly or a predefined iteration limit is reached.
+
+Key concept:
+Minimizes the Within-Cluster Sum of Squares (WCSS) — the sum of squared distances between each point and its assigned centroid
+
+* **Key concept:** Reduces the sum of squared distances between data points and their assigned centroids.
+* **Advantages:** Simple, efficient, and scalable.
+* **Disadvantages:** Sensitive to initial centroids, assumes spherical clusters.
+
+===============================================================================================================================================
+
+####2. Hierarchical Clustering
+* **Use case: Identifying nested clusters at multiple levels of granularity, often used for exploratory data analysis and visualizing cluster structures.
+* **How it works:**
+	+ Start with each data point as a separate cluster.
+	+ Merge or split clusters based on their similarity (e.g., distance or density).
+	+ Continue until a stopping criterion is met (e.g., a single cluster or a specified number of clusters).
+* **Key concept:** Represents clusters at different scales, allowing for flexible cluster selection.
+
+Key concept:
+Generates a hierarchy of clusters from individual elements to a single cluster, supporting flexible cluster selection at any level.
+
+* **Advantages:** Handles clusters of varying densities, provides a dendrogram for visualization.
+* **Disadvantages:** Can be computationally expensive, sensitive to choice of distance metric.
+
+===============================================================================================================================================
+
+####3. DBSCAN (Density-Based Spatial Clustering of Applications with Noise)
+* **Use case: Discovering clusters of arbitrary shape and detecting outliers in data containing noise or clusters of varying densities.
+* **How it works:**
+	+ Define a minimum number of points (ε) and a maximum distance (δ) between points.
+	+ Identify core points with at least ε points within δ distance.
+	+ Connect core points to form clusters.
+	+ Label points that are not core points but are within δ distance of a core point.
+
+* **Key concept: Clusters are dense regions of points separated by areas of lower density.
+* **Advantages:** Robust to noise, handles clusters of varying densities.
+* **Disadvantages:** Sensitive to choice of ε and δ, can be computationally expensive.
+
+===============================================================================================================================================
+
+####4. K-Medoids
+* **Use case: Clustering where robustness to outliers and handling of non-spherical clusters is needed.
+* **How it works:**
+	+ Initialize K medoids randomly.
+	+ Assign each data point to the closest medoid.
+	+ Update medoids by selecting the point that minimizes the total distance to all points in the cluster.
+	+ Repeat the process until convergence or a stopping criterion is met.
+* **Key concept: Minimizes the sum of pairwise dissimilarities between points and their medoids, unlike K-Means which uses mean positions.
+* **Advantages:** More robust to outliers than K-Means, handles non-spherical clusters.
+* **Disadvantages:** Can be computationally expensive, sensitive to initial medoids.
+
+===============================================================================================================================================
+
+####5. Principal Component Analysis (PCA)
+* **Use case: Dimensionality reduction while preserving as much variance in the data as possible, often used for feature extraction and data visualization.
+* **How it works:**
+	+ Calculate the covariance matrix of the data.
+	+ Compute the eigenvectors and eigenvalues of the covariance matrix.
+	+ Select the top k eigenvectors corresponding to the largest eigenvalues.
+	+ Project the data onto the selected eigenvectors.
+* **Key concept: Transforms correlated features into a set of uncorrelated components capturing maximum variance.
+* **Advantages:** Simple, efficient, and interpretable.
+* **Disadvantages:** Assumes linear relationships, sensitive to outliers.
+
+===============================================================================================================================================
+
+####6. t-Distributed Stochastic Neighbor Embedding (t-SNE)
+* **Use case: Non-linear dimensionality reduction and visualization of high-dimensional data in 2D or 3D spaces.
+* **How it works:**
+	+ Compute the similarity between data points using a Gaussian distribution.
+	+ Map the data to a lower-dimensional space using a non-linear transformation.
+	+ Optimize the embedding using a cost function (e.g., KL divergence).
+* **Key concept: Preserves local structure (neighboring points) while ignoring global structure.
+* **Advantages:** Handles non-linear relationships, provides a good visualization.
+* **Disadvantages:** Can be computationally expensive, sensitive to hyperparameters.
+
+===============================================================================================================================================
+
+####7. Autoencoders
+* **Use case:** Dimensionality reduction, anomaly detection, and generative modeling.
+* **How it works:**
+	+ Define an encoder network that maps the input to a lower-dimensional representation.
+	+ Define a decoder network that maps the representation back to the input.
+	+ Train the autoencoder using a reconstruction loss function (e.g., mean squared error).
+* **Key concept:** Learns a compact representation of the data.
+* **Advantages:** Flexible, can be used for various tasks (e.g., dimensionality reduction, generative modeling).
+* **Disadvantages:** Can be computationally expensive, sensitive to hyperparameters.
+
+===============================================================================================================================================
+
+####8. Gaussian Mixture Models (GMM)
+* **Use case:** Clustering, especially for complex or overlapping clusters.
+* **How it works:**
+	+ Define a mixture of Gaussian distributions.
+	+ Compute the probability of each data point belonging to each component.
+	+ Update the model parameters using the Expectation-Maximization algorithm.
+* **Key concept:** Models clusters using a probabilistic approach.
+* **Advantages:** Handles complex clusters, provides a probabilistic assignment.
+* **Disadvantages:** Can be computationally expensive, sensitive to initial parameters.
+
+===============================================================================================================================================
+
+####9. Expectation-Maximization (EM) Algorithm
+* **Use case:** Clustering, especially for incomplete or noisy data.
+* **How it works:**
+	+ Initialize model parameters.
+	+ Compute the expected likelihood of the data given the model parameters (E-step).
+	+ Update the model parameters to maximize the expected likelihood (M-step).
+	+ Repeat the process until convergence or a stopping criterion is met.
+* **Key concept:** Handles missing data and incomplete observations.
+* **Advantages:** Robust to missing data, provides a flexible framework for modeling.
+* **Disadvantages:** Can be computationally expensive, sensitive to initial parameters.
+
+===============================================================================================================================================
+
+####10. Local Outlier Factor (LOF)
+* **Use case:** Anomaly detection, especially for identifying local outliers.
+* **How it works:**
+	+ Compute the local density of each data point.
+	+ Compare the local density to the densities of neighboring points.
+	+ Assign an anomaly score based on the local density.
+* **Key concept:** Detects anomalies based on their local neighborhood.
+* **Advantages:** Robust to noise, handles varying densities.
+* **Disadvantages:** Sensitive to choice of parameters, can be computationally expensive.
+
+===============================================================================================================================================
