@@ -1,0 +1,70 @@
+Convolutional Neural Networks (CNNs)
+Definition: CNNs are a type of neural network designed to process data with grid-like topology, such as images. They are particularly effective in image recognition and classification tasks.
+
+Steps in a CNN:
+Convolutional Layer
+
+Definition: This layer applies filters (kernels) to small regions of the input image, scanning the entire image to generate feature maps.
+
+Process: The kernel slides over the image, performing a dot product at each position to detect features like edges or textures.
+
+Padding: Often used to maintain the spatial dimensions of the input data by adding zeros around the edges. This helps in preserving the information at the borders.
+
+Activation Function (e.g., ReLU)
+
+Definition: Introduces non-linearity into the model, allowing it to learn complex patterns.
+
+Process: ReLU (Rectified Linear Unit) sets all negative values to zero, enhancing the model's ability to generalize.
+
+Pooling Layer
+
+Definition: Reduces the spatial dimensions of the feature maps, retaining key features and reducing computational complexity.
+
+Process: Commonly uses max or average pooling, where each region of the feature map is downsampled to a single value.
+
+Flattening Layer
+
+Definition: Converts the output of convolutional and pooling layers into a one-dimensional vector.
+
+Process: Prepares the data for fully connected layers by transforming it into a linear format.
+
+Fully Connected Layers
+
+Definition: These layers are used for classification or regression tasks.
+
+Process: The flattened data is passed through one or more fully connected layers to produce the final output.
+
+Output Layer
+
+Definition: Provides the final prediction based on the task (e.g., classification using Softmax).
+
+Process: For classification tasks, Softmax is often used to output probabilities for each class.
+
+Additional Concepts:
+Stride: The number of pixels the kernel moves over when scanning the image.
+
+Depthwise Separable Convolutions: A technique that separates the convolution into two steps: depthwise convolution (applied separately to each channel) and pointwise convolution (a standard convolution with a kernel size of 1x1).
+
+Key Features of CNNs:
+Local Connectivity: Each neuron processes data only from a small region (receptive field).
+
+Shared Weights: Filters are replicated across the entire input, reducing parameters and enhancing translational invariance.
+
+Hierarchical Feature Extraction: CNNs learn features from simple to complex by stacking multiple layers.
+
+Example Architecture:
+Input Layer: Image (224x224x3)
+
+Convolutional Layer: 32 filters, kernel size 3x3, padding 1, stride 1
+
+ReLU Activation
+
+Max Pooling: 2x2, stride 2
+
+Flattening
+
+Fully Connected Layers: Two layers with 128 and 10 neurons respectively
+
+Output Layer: Softmax for classification
+
+This architecture is a simplified version of how CNNs process images for classification tasks.

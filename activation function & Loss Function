@@ -1,0 +1,91 @@
+Gradient descent:
+It is a fundamental optimization algorithm used for minimizing the objective function by iteratively moving towards the minimum.
+
+Learning Rate:
+It determines how much the model's parameters are adjusted in response to the estimated error (gradient)
+
+2. Non-Linear Activation Functions:
+
+1. Sigmoid Function 
+
+Sigmoid Activation Function is characterized by ‘S’ shape. This formula ensures a smooth and continuous output that is essential for gradient-based optimization methods.
+The output ranges between 0 and 1, hence useful for binary classification.
+
+2. Tanh Activation Function 
+
+Tanh function (hyperbolic tangent function), is a shifted version of the sigmoid, allowing it to stretch across the y-axis.
+-- Value Range: Outputs values from -1 to +1.
+-- Non-linear: Enables modeling of complex data patterns.
+-- Use in Hidden Layers: Commonly used in hidden layers due to its zero-centered output, facilitating easier learning for subsequent layers.
+
+3. ReLU (Rectified Linear Unit) Function 
+
+ReLU is activation function that helps avoid vanishing gradients and computationally efficient in deep learning. 
+
+Value Range:[0,∞), meaning the function only outputs non-negative values.
+Nature: It is a non-linear activation function, allowing neural networks to learn complex patterns and making backpropagation more efficient.
+Advantage over other Activation: ReLU is less computationally expensive than tanh and sigmoid because it involves simpler mathematical operations. At a time only a few neurons are activated making the network sparse making it efficient and easy for computation.
+
+
+3. Exponential Linear Units:
+1. Softmax Function
+
+Softmax function is designed to handle multi-class classification problems. It transforms raw output scores from a neural network into probabilities. It works by squashing the output values of each class into the range of 0 to 1, while ensuring that the sum of all probabilities equals 1.
+
+Softmax is a non-linear activation function.
+The Softmax function ensures that each class is assigned a probability, helping to identify which class the input belongs to.
+
+===============================================================================================================================
+
+What is ReLU and softmax?
+ReLU outputs the input directly if it’s positive, or zero otherwise, and is used in hidden layers to speed up training.
+Softmax is used in the output layer for multi-class classification, converting raw outputs into probabilities for each class.
+
+
+
+++++++++++++++++++++++++++++++LOSS FUNCTION++++++++++++++++++++++++++++++++++++
+A. Regression
+
+1. Mean Squared Error (MSE) Loss
+The Mean Squared Error (MSE) Loss is one of the most widely used loss functions for regression tasks. It calculates the average of the squared differences between the predicted values and the actual values.
+
+2. Mean Absolute Error (MAE) Loss
+The Mean Absolute Error (MAE) Loss is another commonly used loss function for regression. It calculates the average of the absolute differences between the predicted values and the actual values.
+
+3. Huber Loss
+Huber Loss combines the advantages of MSE and MAE. It is less sensitive to outliers than MSE and differentiable everywhere, unlike MAE.
+
+B. Classification Loss Functions
+
+1. Binary Cross-Entropy Loss (Log Loss)
+Binary Cross-Entropy Loss, also known as Log Loss, is used for binary classification problems. It measures the performance of a classification model whose output is a probability value between 0 and 1.
+
+2. Categorical Cross-Entropy Loss
+Categorical Cross-Entropy Loss is used for multiclass classification problems. It measures the performance of a classification model whose output is a probability distribution over multiple classes.
+
+3. Sparse Categorical Cross-Entropy Loss
+Sparse Categorical Cross-Entropy Loss is similar to Categorical Cross-Entropy Loss but is used when the target labels are integers instead of one-hot encoded vectors.
+
+4. Kullback-Leibler Divergence Loss (KL Divergence)
+KL Divergence measures how one probability distribution diverges from a second, expected probability distribution. It is often used in probabilistic models.
+
+D. Image and Reconstruction Loss Functions
+These loss functions are used to evaluate models that generate or reconstruct images, ensuring that the output is as close as possible to the target images.
+
+3. Ranking Loss Functions
+Ranking loss functions are used to evaluate models that predict the relative order of items. These are commonly used in tasks such as recommendation systems and information retrieval.
+
+1. Contrastive Loss
+Contrastive Loss is used to learn embeddings such that similar items are closer in the embedding space, while dissimilar items are farther apart. It is often used in Siamese networks.
+
+Contrastive Loss
+where d, is the distance between a pair of embeddings, yi is 1 is 1 for similar pairs and 0 for dissimilar pairs, and mmm is a margin.
+
+2. Triplet Loss
+Triplet Loss is used to learn embeddings by comparing the relative distances between triplets: an anchor, a positive example, and a negative example.
+
+3. Margin Ranking Loss
+Margin Ranking Loss measures the relative distances between pairs of items and ensures that the correct ordering is maintained with a specified margin.
+
+1. Pixel-wise Cross-Entropy Loss
+Pixel-wise Cross-Entropy Loss is used for image segmentation tasks, where each pixel is classified independently.

@@ -1,0 +1,26 @@
+1.1 Gradient Descent and Its Variants
+
+Gradient Descent:
+It is a fundamental optimization algorithm used for minimizing the objective function by iteratively moving towards the minimum. It is a first-order iterative algorithm for finding a local minimum of a differentiable multivariate function. The algorithm works by taking repeated steps in the opposite direction of the gradient (or approximate gradient) of the function at the current point, because this is the direction of steepest descent.
+
+Stochastic Gradient Descent (SGD): 
+This variant suggests model to update using a single training example at a time which does not require a large amount of computation and therefore is suitable for large datasets. Thus, they are stochastic and can produce noisy updates and, therefore, may require a careful selection of learning rates.
+
+Momentum
+Just like its name, Momentum adds inertia to the update process, by adding a fraction of the previous update to the current update.
+SGD can fluctuate in loss reduction, but adding momentum stabilizes it.
+
+Mini-Batch Gradient Descent:
+This method is designed in such a manner that it computes it for every mini-batches of data, a balance between amount of time and precision. It converges faster than SGD and is used widely in practice to train many deep learning models
+
+
+7. Optimization Techniques in Deep Learning:
+
+Deep learning models are usually intricate and some contain millions of parameters. These models are highly dependent on optimisation techniques that enable their effective training as well as generalisation on unseen data. Different optimizers can effect the speed of convergence and the quality of the result at the output of the model. Common Techniques are:
+
+Adam (Adaptive Moment Estimation): 
+Adam is derived from two other techniques, namely, AdaGrad and RMSProp; it is a widely used optimization technique. At each time step, Adam keeps track of both the gradients and their second moments moving average. It is used to modify the learning rate for each parameter in the process. Most of them are computationally efficient, have small memory requirements, and are particularly useful for large data and parameters.
+
+
+RMSProp (Root Mean Square Propagation): 
+RMSProp was intended for gradients’ learning rate optimization of every parameter. It specific the learning rate by focusing on the scale of the gradients over time, which reduces the risk of vanishing and exploding gradients. RMSProp keeps the moving average of the squared gradients and tuned the learning rate for each parameter based on the gradient magnitude.
