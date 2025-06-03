@@ -1,0 +1,187 @@
+# Step 1: Import Required Libraries
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+from scipy import stats
+from sklearn.model_selection import train_test_split, StratifiedKFold, cross_val_score
+from sklearn.preprocessing import StandardScaler, OneHotEncoder, PowerTransformer
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.decomposition import PCA
+from sklearn.metrics import confusion_matrix, classification_report, accuracy_score, precision_score, recall_score, f1_score
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, AdaBoostClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+from sklearn.feature_selection import SelectKBest, f_classif
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+import xgboost as xgb
+import optuna
+
+===============================================================================================================================================
+# Step 2: Load the Dataset
+data = pd.read_csv('your_dataset.csv')  # Replace with your dataset path
+print(data.head())
+print(data.info())
+===============================================================================================================================================
+# Step 3: Data Cleaning
+# Handle missing values - Fill missing values with mean for numerical columns and mode for categorical columns
+data.fillna(data.mean(), inplace=True)
+data.fillna(data.mode().iloc[0], inplace=True)
+
+===============================================================================================================================================
+# Step 4: Multicollinearity Detection using VIF
+# Remove features with high multicollinearity
+def calculate_vif(df):
+    vif_data = pd.DataFrame()
+    vif_data["feature"] = df.columns
+    vif_data["VIF"] = [variance_inflation_factor(df.values, i) for i in range(len(df.columns))]
+    return vif_data
+
+# Check VIF for numerical columns
+numerical_cols = data.select_dtypes(include=[np.number]).columns
+vif = calculate_vif(data[numerical_cols])
+print(vif)
+
+# Drop features with VIF > 10 (multicollinearity threshold)
+high_vif_columns = vif[vif['VIF'] > 10]['feature']
+data.drop(columns=high_vif_columns, inplace=True)
+
+===============================================================================================================================================
+# Step 5: Train/Test Split with Validation Set
+X = data.drop('target_column', axis=1)  # Replace 'target_column' with your actual target variable
+y = data['target_column']
+
+# Split data into train (70%), val (15%), and test (15%) sets using stratified splitting
+X_train, X_temp, y_train, y_temp = train_test_split(X, y, test_size=0.30, random_state=42, stratify=y)
+X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.50, random_state=42, stratify=y_temp)
+
+===============================================================================================================================================
+# Step 6: Preprocessing Pipeline
+# Define numerical and categorical columns
+numerical_features = X.select_dtypes(include=[np.number]).columns
+categorical_features = X.select_dtypes(include=[object]).columns
+
+# Build preprocessing pipeline
+numerical_transformer = Pipeline(steps=[
+    ('scaler', StandardScaler()),    # Scale numerical data
+    ('power_transformer', PowerTransformer())  # Apply transformation to normalize skewed data
+])
+
+categorical_transformer = Pipeline(steps=[
+    ('onehot', OneHotEncoder(handle_unknown='ignore'))  # One-hot encode categorical data
+])
+
+# Combine numerical and categorical transformers
+preprocessor = ColumnTransformer(transformers=[
+    ('num', numerical_transformer, numerical_features),
+    ('cat', categorical_transformer, categorical_features)
+])
+
+===============================================================================================================================================
+# Step 7: Feature Selection - Select Top 10 Features using ANOVA F-test
+feature_selector = SelectKBest(score_func=f_classif, k=10)
+
+===============================================================================================================================================
+# Step 8: PCA - Dimensionality Reduction (optional)
+pca = PCA(n_components=0.95)
+
+# Combine preprocessing, feature selection, and PCA in a pipeline
+pipeline = Pipeline(steps=[
+    ('preprocessor', preprocessor),
+    ('feature_selection', feature_selector),
+    ('pca', pca)  # Keep this step optional or adjust components
+])
+
+# Fit and transform the training, validation, and test data using the pipeline
+X_train_prepared = pipeline.fit_transform(X_train, y_train)
+X_val_prepared = pipeline.transform(X_val)
+X_test_prepared = pipeline.transform(X_test)
+
+===============================================================================================================================================
+# Step 9: Model Selection with Stratified K-Fold Cross-Validation
+models = {
+    'Random Forest': RandomForestClassifier(n_estimators=100, random_state=42),
+    'Gradient Boosting': GradientBoostingClassifier(random_state=42),
+    'AdaBoost': AdaBoostClassifier(random_state=42),
+    'Logistic Regression': LogisticRegression(random_state=42),
+    'SVC': SVC(random_state=42),
+    'XGBoost': xgb.XGBClassifier(use_label_encoder=False, eval_metric='mlogloss', random_state=42)
+}
+
+# Perform 5-fold cross-validation on each model
+cv_results = {}
+strat_kfold = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+
+for name, model in models.items():
+    cv_score = cross_val_score(model, X_train_prepared, y_train, cv=strat_kfold, scoring='accuracy')
+    cv_results[name] = np.mean(cv_score)
+    print(f"{name}: Mean CV Accuracy = {np.mean(cv_score):.4f}")
+
+# Select the best model based on cross-validation score (e.g., XGBoost)
+best_model_name = max(cv_results, key=cv_results.get)
+best_model = models[best_model_name]
+print(f"Best Model Selected: {best_model_name}")
+
+===============================================================================================================================================
+# Step 10: Train the Selected Model (XGBoost)
+best_model.fit(X_train_prepared, y_train)
+
+===============================================================================================================================================
+# Step 11: Evaluate on Validation Set
+y_val_pred = best_model.predict(X_val_prepared)
+
+print("Validation Set Evaluation:")
+print("Accuracy:", accuracy_score(y_val, y_val_pred))
+print("Confusion Matrix:\n", confusion_matrix(y_val, y_val_pred))
+print("Classification Report:\n", classification_report(y_val, y_val_pred))
+
+===============================================================================================================================================
+# Step 12: Hyperparameter Tuning using Optuna for XGBoost
+def objective(trial):
+    param = {
+        'max_depth': trial.suggest_int('max_depth', 2, 10),
+        'learning_rate': trial.suggest_loguniform('learning_rate', 1e-4, 1e-1),
+        'n_estimators': trial.suggest_int('n_estimators', 50, 300),
+        'subsample': trial.suggest_uniform('subsample', 0.5, 1.0)
+    }
+    model = xgb.XGBClassifier(**param, use_label_encoder=False, eval_metric='mlogloss', random_state=42)
+    return cross_val_score(model, X_train_prepared, y_train, cv=strat_kfold).mean()
+
+study = optuna.create_study(direction='maximize')
+study.optimize(objective, n_trials=20)
+
+best_params = study.best_params
+print("Best Hyperparameters:", best_params)
+
+===============================================================================================================================================
+# Step 13: Train XGBoost with Best Hyperparameters
+tuned_xgb_model = xgb.XGBClassifier(**best_params, use_label_encoder=False, eval_metric='mlogloss', random_state=42)
+tuned_xgb_model.fit(X_train_prepared, y_train)
+
+# Step 14: Final Evaluation on the Test Set
+y_test_pred = tuned_xgb_model.predict(X_test_prepared)
+
+print("Test Set Evaluation:")
+print("Accuracy:", accuracy_score(y_test, y_test_pred))
+print("Confusion Matrix:\n", confusion_matrix(y_test, y_test_pred))
+print("Classification Report:\n", classification_report(y_test, y_test_pred))
+
+# Additional Metrics
+precision = precision_score(y_test, y_test_pred, average='weighted')
+recall = recall_score(y_test, y_test_pred, average='weighted')
+f1 = f1_score(y_test, y_test_pred, average='weighted')
+
+print(f"Precision: {precision:.4f}")
+print(f"Recall: {recall:.4f}")
+print(f"F1 Score: {f1:.4f}")
+
+# Sensitivity and Specificity
+conf_matrix = confusion_matrix(y_test, y_test_pred)
+tn, fp, fn, tp = conf_matrix.ravel()
+
+sensitivity = tp / (tp + fn)
+specificity = tn / (tn + fp)
+
+print(f"Sensitivity (Recall): {sensitivity:.4f}")
+print(f"Specificity: {specificity:.4f}")
